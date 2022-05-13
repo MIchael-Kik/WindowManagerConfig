@@ -1,0 +1,99 @@
+# Basic Settings
+set hidden true
+set ignorecase true
+set drawbox true
+
+cmd mkdirs ${{
+  printf "Directory Name: "
+  read ans
+  mkdir $ans
+}}
+
+cmd mkfile ${{
+  printf "File Name: "
+  read ans
+  $EDITOR $ans
+}}
+
+cmd chmod ${{
+  printf "Mode Bits: ["
+  read ans
+  
+  for file in "$fx"
+  do
+    chmod $ans $file
+  done
+}}
+
+cmd sudmkfile ${{
+  printf "File Name: "
+  read ans
+  sudo $EDITOR $ans
+}}
+
+cmd viewimage ${{
+    feh "$f"
+}}
+# Archive Bindings
+
+cmd unarchive ${{
+  case "$f" in
+    *.zip) unzip "$f" ;;
+    *.tar.xz) tar -xf "$f" ;;
+    *.tar.gz) tar -xzvf "$f" ;;
+    *.tar.bz2) tar -zjvf "$f" ;;
+    *.tar) tar -xvf "$f" ;;
+    *) echo "Unsupported format" ;;
+  esac
+}}
+
+cmd czip %zip -r "$f" "$f"
+cmd ctar %tar cvf "$f.tar" "$f"
+cmd ctargz %tar cvzf "$f.tat.gz" "$f"
+cmd ctarbz2 %tar cjvf "$f.tar.bz2" "$f"
+
+#Encrypting
+
+cmd decrypt %gpg "$f"
+cmd encrypt %gpg -c "$f"
+
+#Bindings
+#Remove Some Defults
+
+map n
+map m
+map "'"
+map '"'
+map d
+map c
+map e
+map f
+
+#file openers
+map ee $$EDITOR "$f"
+map es $sudo $EDITOR "$f"
+map z $view "$f"
+
+#Archive Mappings
+map az czip
+map at ctat
+map ag ctargz
+map ab ctarbz2
+map au unarchive
+
+map DD delete
+map p paste
+map x cut
+map y copy
+map <enter> $$EDITOR "$f" 
+map mf mkfile
+map mr sudomkfile
+map md mkdirs
+map ch chmod
+map r rename
+map R reload
+map cc unselect 
+map ec encrypt
+map ed decrypt
+map iv viewimage
+
